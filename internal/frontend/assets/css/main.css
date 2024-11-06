@@ -1,0 +1,8 @@
+body {
+  font-family: 'Rubik', sans-serif;
+  min-width: 350px;
+}
+
+#search-keyword, #search-field, .input-group-text{
+  border: solid #198754 1px !important;
+}
