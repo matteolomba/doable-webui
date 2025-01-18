@@ -18,7 +18,7 @@ A web ui to interact with todos written and synced with [Doable](https://doable.
 ## Requirements
 
 - Doable sync on Nextcloud (or WebDAV, untested) set up and active.
-- The Doable folder, which must be in the same directory as the program, must contain the files that Doable syncs. Automatic sync with Nextcloud in the program may be implemented in the future.
+- The sync folder, which must be in the same directory as the program, must contain the files that Doable syncs. Automatic sync with Nextcloud in the program may be implemented in the future.
 
 ## .env
 

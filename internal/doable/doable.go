@@ -46,7 +46,7 @@ type TodoList struct {
 // ReadTodos reads all the todos from the .todo files in the todos directory and returns them as a slice of Todo with an error if any
 func ReadTodos() (todos []Todo, err error) {
 	//Get files
-	files, err := os.ReadDir("Doable/todos")
+	files, err := os.ReadDir("sync/todos")
 	if err != nil {
 		return
 	}
@@ -56,7 +56,7 @@ func ReadTodos() (todos []Todo, err error) {
 	} else {
 		for _, f := range files {
 			//Read file
-			tempData, err := os.ReadFile("Doable/todos/" + f.Name())
+			tempData, err := os.ReadFile("sync/todos/" + f.Name())
 			if err != nil {
 				return nil, err
 			}
@@ -76,7 +76,7 @@ func ReadTodos() (todos []Todo, err error) {
 // ReadLists reads all the lists from the .list files in the lists directory and returns them as a slice of TodoList with an error if any
 func ReadLists() (lists []TodoList, err error) {
 	//Get files
-	files, err := os.ReadDir("Doable/lists")
+	files, err := os.ReadDir("sync/lists")
 	if err != nil {
 		return
 	}
@@ -86,7 +86,7 @@ func ReadLists() (lists []TodoList, err error) {
 	} else {
 		for _, f := range files {
 			//Read file
-			tempData, err := os.ReadFile("Doable/lists/" + f.Name())
+			tempData, err := os.ReadFile("sync/lists/" + f.Name())
 			if err != nil {
 				return nil, err
 			}

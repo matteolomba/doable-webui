@@ -18,7 +18,7 @@ Un'interfaccia web per interagire con cose da fare scritte e sincronizzate con [
 ## Requisiti
 
 - Sincronizzazione di Doable con Nextcloud (o WebDAV, non testato) impostata e attiva.
-- La cartella Doable, che deve essere presente nella stessa directory del programma, deve contenere i file che Doable sincronizza. In futuro potrebbe venire implementata la sincronizzazione automatica con Nextcloud direttamente nel programma.
+- La cartella sync, che deve essere presente nella stessa directory del programma, deve contenere i file che Doable sincronizza. In futuro potrebbe venire implementata la sincronizzazione automatica con Nextcloud direttamente nel programma.
 
 ## .env
 
