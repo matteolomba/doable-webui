@@ -73,6 +73,27 @@ func ReadTodos() (todos []Todo, err error) {
 	return todos, nil
 }
 
+// ReadTodo reads a single todo from the .todo file in the todos directory, given the id, and returns it as a Todo struct
+func ReadTodo(id string) (todo Todo, err error) {
+	//Check if file exists
+	if _, err = os.Stat("sync/todos/" + id + ".todo"); os.IsNotExist(err) {
+		return
+	}
+
+	//Read file
+	tempData, err := os.ReadFile("sync/todos/" + id + ".todo")
+	if err != nil {
+		return Todo{}, err
+	}
+
+	//Parse JSON
+	var tempTodo Todo
+	if err = json.Unmarshal(tempData, &tempTodo); err != nil {
+		return
+	}
+	return tempTodo, nil
+}
+
 // ReadLists reads all the lists from the .list files in the lists directory and returns them as a slice of TodoList with an error if any
 func ReadLists() (lists []TodoList, err error) {
 	//Get files
@@ -114,4 +135,20 @@ func (t *Todo) GetListName(lists []TodoList) string {
 		}
 	}
 	return "Not found"
+}
+
+// SaveTodo saves a todo to a .todo file in the todos directory, given the Todo struct
+func SaveTodo(todo Todo) error {
+	//Parse JSON
+	data, err := json.MarshalIndent(todo, "", "\t")
+	if err != nil {
+		return err
+	}
+
+	//Write file
+	err = os.WriteFile("sync/todos/"+todo.ID+".todo", data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }

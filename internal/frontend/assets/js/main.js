@@ -24,7 +24,7 @@ window.onbeforeunload = function (e) {
 
 // Function to download lists and todos from the server and update the page
 function download(){
-    fetch("api/lists/get", {
+    fetch("api/lists", {
         method: "GET",
         headers: {'Content-Type': 'application/json'},
     }).then(res => {
@@ -42,7 +42,7 @@ function download(){
         }
     });
 
-    fetch("api/todos/get", {
+    fetch("api/todos", {
         method: "GET",
         headers: {'Content-Type': 'application/json'},
     }).then(res => {
@@ -64,6 +64,28 @@ function download(){
                 search(); //Update the page with the new data
                 showNotification(checkCircle() + "Dati ottenuti con successo!");
             })
+        } else {
+            res.text().then(text => {
+                console.error("Errore " + res.status + " - " + text);
+                showNotification("Errore " + res.status + " - " + text, "error");
+            });
+        }
+    });
+}
+
+function checkTodo(id){
+    let form = new FormData();
+    form.append("id", id);
+    fetch("api/todos/check", {
+        method: "POST",
+        body: form
+    }).then(res => {
+        if(res.status == 200){
+            let toBeChecked = todosDB.find(x => x.id == id)
+            let elementIndex = todosDB.indexOf(toBeChecked);
+            todosDB.splice(elementIndex, 1);
+            search(); //Update the page with the new data
+            showNotification(checkCircle() + toBeChecked.title + " segnata come completata!");
         } else {
             res.text().then(text => {
                 console.error("Errore " + res.status + " - " + text);
@@ -152,9 +174,11 @@ function createListItem(todo){
     return `<a id="${todo.id}" class="list-group-item list-group-item-action">
     <div class="d-flex flex-row justify-content-between">
         <div id="${todo.id}-left" class="flex-grow-4 flex-grow-1 d-flex flex-row">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.52rem" height="1.52rem" min-width="1.52rem" min-height="1.52rem" class="main-grid-item-icon pe-1 flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-            </svg>
+            <div onclick='checkTodo("${todo.id}")' class="clickable">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.52rem" height="1.52rem" min-width="1.52rem" min-height="1.52rem" class="main-grid-item-icon pe-1 flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                </svg>
+            </div>
             <div class="d-flex flex-column">
                 <div class="d-flex flex-column">
                     <h5 id="${todo.id}-title" class="d-flex align-items-top mb-auto fs-5">${todo.title}</h5>

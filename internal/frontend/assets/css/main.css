@@ -6,3 +6,7 @@ body {
 #search-keyword, #search-field, .input-group-text{
   border: solid #198754 1px !important;
 }
+
+.clickable {
+  cursor: pointer !important;
+}
