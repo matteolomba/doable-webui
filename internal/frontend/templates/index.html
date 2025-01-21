@@ -3,36 +3,62 @@
     <!-- Header -->
     {{template "header.html" .title}}
     <body>
-        <div class="container p-0 overflow-hidden">
+        <div class="container p-0">
             <div class="row p-3 w-100 mx-auto">
                 <div class="col-12">
                     <!-- Search -->
                     <div class="input-group d-flex pb-3 z-2">
-                        <input id="search-keyword" class="form-control rounded-start-4" style="flex-grow: 13;" type="text" placeholder="Cerca">
-                        <select id="search-field" class="form-select" style="flex-grow: 5;">
-                            <option selected value="1">Titolo</option>
-                            <option value="2">Descrizione</option>
-                            <option value="3">Titolo e Descrizione</option>
-                        </select>
-                        <button id="search-button" type="button" style="flex-grow: 0.3;" class="btn rounded-end-4 border-start-0 btn-success">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" x2="16.65" y1="21" y2="16.65" />
-                            </svg>
-                        </button>
+                        <input id="search-keyword" class="form-control rounded-start-4" style="flex-grow: 30;" type="text" placeholder="Cerca">
+                        <div class="btn-group" style="flex-grow: 1;">
+                            <button id="search-button" type="button" style="flex-grow: 0.5;" class="btn border-start-0 rounded-0 btn-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="main-grid-item-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" x2="16.65" y1="21" y2="16.65" />
+                                </svg>
+                            </button>
+                            <button style="flex-grow: 0.5;" type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split rounded-end-4" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                            <div class="dropdown-menu p-2" style="min-width: 12rem; border: solid #198754 1px !important;">
+                                <div class="mb-3">
+                                    <label for="search-field" class="form-label">
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="color: #198754" class="feather feather-search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg> Dove cerco?
+                                    </label>
+                                    <select id="search-field" class="form-select">
+                                        <option selected value="1">Titolo</option>
+                                        <option value="2">Descrizione</option>
+                                        <option value="3">Titolo e Descrizione</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="search-filter" class="form-label">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="feather feather-filter m-0" style="color: #198754" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                        </svg> Cosa vuoi vedere?
+                                    </label>
+                                    <select id="search-filter" class="form-select">
+                                        <option selected value="1">Non completate</option>
+                                        <option value="2">Tutte</option>
+                                        <option value="3">Completate</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Todo list -->
                     <div id="list" class="z-0 list-group rounded-4">
-                        <h2 class="mx-auto mt-3">Caricamento in corso...</h2>
+                        <h2 class="mx-auto mt-3">Caricamento in corso</h2>
+                        <div class="spinner-border mx-auto" role="status"></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Toast used for notification -->
-        <div id="notifyToast" class="toast tex align-items-center position-fixed border-0 top-0 start-50 translate-middle-x mt-3 z-3 rounded-4 mw-75 min-vw-25" role="alert" aria-live="assertive" aria-atomic="true">
-            <div id="notifyToastBody" class="toast-body text-center m-0"></div>
+        <div id="notifyToast" class="toast tex align-items-center position-fixed border-0 bottom-0 start-50 translate-middle-x mb-2 z-3 rounded-4 mw-75 min-vw-25" role="alert" aria-live="assertive" aria-atomic="true">
+            <div id="notifyToastBody" class="toast-body text-center mx-auto"></div>
         </div>
     </body>
 </html>

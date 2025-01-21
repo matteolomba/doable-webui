@@ -13,11 +13,11 @@ import (
 // Handler for /api/todos
 func GetTodos() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		todos, err := doable.ReadTodos()
+		todos, err := doable.GetTodos()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting todos")
+			return fiber.NewError(500, "Error while getting todos. Error: "+err.Error())
 		}
-		log.Info("[API] Requested todos")
+		log.Info("[API] Todos requested")
 		return c.JSON(todos)
 	}
 }
@@ -25,9 +25,9 @@ func GetTodos() func(c *fiber.Ctx) error {
 // Handler for /api/lists
 func GetTodoLists() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		lists, err := doable.ReadLists()
+		lists, err := doable.GetLists()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting lists")
+			return fiber.NewError(500, "Error while getting lists. Error: "+err.Error())
 		}
 
 		log.Info("[API] Todo lists requested")
@@ -38,14 +38,14 @@ func GetTodoLists() func(c *fiber.Ctx) error {
 // Handler for /api/todos/formatted
 func GetFormattedTodos() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		todos, err := doable.ReadTodos()
+		todos, err := doable.GetTodos()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting todos for formatted todos")
+			return fiber.NewError(500, "Error while getting todos for formatted todos. Error: "+err.Error())
 		}
 
-		lists, err := doable.ReadLists()
+		lists, err := doable.GetLists()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting lists for formatted todos")
+			return fiber.NewError(500, "Error while getting lists for formatted todos. Error: "+err.Error())
 		}
 
 		// Format only completed todos

@@ -15,7 +15,7 @@ func formatErr(err any) string {
 	case error:
 		return e.Error()
 	default:
-		return "Logger: Unknown error type passed to logger"
+		return "[Logger] Unknown error type passed to logger"
 	}
 }
 
@@ -27,7 +27,7 @@ func Init(level string) {
 	//Open file for logging
 	logFile, err := os.OpenFile("log.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
-		Fatal("Logger: Error opening the log file -> " + fmt.Sprint(err))
+		Fatal("[Logger] Error opening the log file -> " + fmt.Sprint(err))
 	}
 
 	//Set the default logger

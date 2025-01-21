@@ -50,11 +50,7 @@ function download(){
             res.json().then(out =>{
                 if(out != null && out != undefined && out != ""){
                     //Save only not completed todos in the local "database"
-                    out.forEach(todo => {
-                        if (todo.isCompleted == false) {
-                            todosDB.push(todo);
-                        }
-                    });
+                    todosDB = out;
 
                     //Order by modified date
                     todosDB.sort(function(a, b){
@@ -108,6 +104,13 @@ document.getElementById("search-keyword").addEventListener("keyup", function(eve
     search();
 });
 
+//Search on checkbox change
+document.getElementById("search-filter").addEventListener("change", function(event) {
+    event.preventDefault();
+    search();
+});
+
+
 // Function to empty list
 function emptyList(){
     document.getElementById("list").textContent = '';
@@ -118,25 +121,38 @@ function search() {
     //Convert input to lowercase as the search is case insensitive
     let input = document.getElementById("search-keyword").value.toLowerCase();
     let searchField = parseInt(document.getElementById("search-field").value);
+    let searchFilter = parseInt(document.getElementById("search-filter").value);
     let searchQuery = [];
     let list = []; //List of elements to put in the html page
-    
-    //Check if the input is empty
+    let tempDB = todosDB;
+
+    //Filter elements based on the selected filter
+    switch (searchFilter){
+        case 1: //Show only not completed todos
+            tempDB = todosDB.filter(todo => todo.isCompleted == false);
+            break;
+        case 2: //Show all todos
+            tempDB = todosDB;
+            break;
+        case 3: //Show only completed todos
+            tempDB = todosDB.filter(todo => todo.isCompleted == true);
+            break;
+    }
+
+    //Search based on the selected search field
     if(input != "" && input != null && input != undefined){
         switch (searchField){
             case 1: //Filter by title
-                searchQuery = todosDB.filter(todo => todo.title.toLowerCase().includes(input));
-                
-                /* //Sort by first occurrence of the search string? Now it is sorted by last modified date
-                searchQuery.sort(function(a, b){
-                    return a.title.toLowerCase().indexOf(input) - b.title.toLowerCase().indexOf(input);
-                });*/
+                searchQuery = tempDB.filter(todo => todo.title.toLowerCase().includes(input));
+                break;
 
             case 2: //Filter by description
-                searchQuery = todosDB.filter(todo => todo.description.toLowerCase().includes(input));
+                searchQuery = tempDB.filter(todo => todo.description.toLowerCase().includes(input));
+                break;
 
             case 3: //Filter by title or description
-                searchQuery = todosDB.filter(todo => todo.title.toLowerCase().includes(input) || todo.description.toLowerCase().includes(input));
+                searchQuery = tempDB.filter(todo => todo.title.toLowerCase().includes(input) || todo.description.toLowerCase().includes(input));
+                break;
         }
 
         //Common code for all filters
@@ -150,8 +166,8 @@ function search() {
         }
 
     } else { //No input, show all elements
-        if (todosDB.length > 0){
-            todosDB.forEach(todo => {
+        if (tempDB.length > 0){
+            tempDB.forEach(todo => {
                 list.push(createListItem(todo));
             });
             document.getElementById("list").innerHTML = list.join('');
@@ -175,9 +191,7 @@ function createListItem(todo){
     <div class="d-flex flex-row justify-content-between">
         <div id="${todo.id}-left" class="flex-grow-4 flex-grow-1 d-flex flex-row">
             <div onclick='checkTodo("${todo.id}")' class="clickable">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.52rem" height="1.52rem" min-width="1.52rem" min-height="1.52rem" class="main-grid-item-icon pe-1 flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="12" cy="12" r="10" />
-                </svg>
+            ${!todo.isCompleted ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.52rem" height="1.52rem" min-width="1.52rem" min-height="1.52rem" class="main-grid-item-icon pe-1 flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10" /></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle pe-1 flex-shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'}
             </div>
             <div class="d-flex flex-column">
                 <div class="d-flex flex-column">

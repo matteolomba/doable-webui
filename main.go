@@ -18,7 +18,8 @@ import (
 
 func init() {
 	log.Init(config.Envs.LogLevel)
-	log.Info("Logger: initialized")
+	log.Info("[Logger] Initialized")
+	doable.Init()
 }
 
 func main() {
