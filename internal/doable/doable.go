@@ -2,18 +2,22 @@ package doable
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	log "doable-go/pkg/logger"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/google/uuid"
 )
 
 var (
-	cachedTodos []Todo     //Cached todos to avoid reading from files every time
-	cachedLists []TodoList //Cached lists to avoid reading from files every time
+	cachedTodos     []Todo     //Cached todos to avoid reading from files every time
+	cachedLists     []TodoList //Cached lists to avoid reading from files every time
+	ErrTitleMissing error      = errors.New("doable: title (required) of the todo is missing")
 )
 
 const (
@@ -161,6 +165,20 @@ func ReadTodos() (todos []Todo, err error) {
 		}
 	}
 	return todos, nil
+}
+
+func (t *Todo) Create() (err error) {
+	if t.Title == "" {
+		return ErrTitleMissing
+	}
+	t.ID = uuid.New().String()
+	t.IsCompleted = false
+	t.IsImportant = false
+	t.HasRecurred = false
+	formattedTime := time.Now().Format("2006-01-02T15:04:05.000")
+	t.CreationDate = formattedTime
+	t.LastModified = formattedTime
+	return nil
 }
 
 // GetListName returns the name of the list of the todo given the TodoList slice, if the list is not found it returns "Not found", if the todo has no list it returns "No list"
