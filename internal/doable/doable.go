@@ -164,28 +164,34 @@ func ReadTodos() (todos []Todo, err error) {
 }
 
 // GetListName returns the name of the list of the todo given the TodoList slice, if the list is not found it returns "Not found", if the todo has no list it returns "No list"
-func (t *Todo) GetListName(lists []TodoList) string {
+func (t *Todo) GetListName(li any) string {
 	if t.ListID == "" {
 		return "No list"
 	}
-	for _, l := range lists {
-		if l.ID == t.ListID {
-			return l.Name
+
+	if list, ok := li.(TodoList); ok {
+		return list.Name
+	} else if lists, ok := li.([]TodoList); ok {
+		for _, l := range lists {
+			if l.ID == t.ListID {
+				return l.Name
+			}
 		}
 	}
 	return "Not found"
 }
 
 // SaveTodo saves a todo to a .todo file in the todos directory, given the Todo struct
-func SaveTodo(todo Todo) error {
+func (t *Todo) Save() (err error) {
+	var data []byte
 	//Parse JSON
-	data, err := json.MarshalIndent(todo, "", "\t")
+	data, err = json.MarshalIndent(t, "", "\t")
 	if err != nil {
 		return err
 	}
 
 	//Write file
-	err = os.WriteFile("sync/todos/"+todo.ID+".todo", data, 0644)
+	err = os.WriteFile("sync/todos/"+t.ID+".todo", data, 0644)
 	if err != nil {
 		return err
 	}

@@ -58,10 +58,14 @@ func main() {
 
 	//-> API
 	//Routes
+	app.Get("/api/lists/:id", api.GetTodoList())
 	app.Get("/api/lists", api.GetTodoLists())
-	app.Get("/api/todos", api.GetTodos())
 	app.Get("/api/todos/formatted", api.GetFormattedTodos())
-	app.Post("/api/todos/check", api.CheckTodo())
+	app.Get("/api/todos/:id/formatted", api.GetFormattedTodo())
+	app.Put("/api/todos/:id/check", api.CheckTodo())
+	app.Get("/api/todos/:id", api.GetTodo())
+	app.Get("/api/todos", api.GetTodos())
+	app.Post("/api/todos", api.CreateTodo())
 
 	//Start server
 	log.Fatal(app.Listen(":80"))

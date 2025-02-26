@@ -70,11 +70,8 @@ function download(){
 }
 
 function checkTodo(id){
-    let form = new FormData();
-    form.append("id", id);
-    fetch("api/todos/check", {
-        method: "POST",
-        body: form
+    fetch("api/todos/"+ id + "/check", {
+        method: "PUT",
     }).then(res => {
         if(res.status == 200){
             let toBeChecked = todosDB.find(x => x.id == id)
