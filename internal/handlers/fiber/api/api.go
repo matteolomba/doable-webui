@@ -176,11 +176,11 @@ func CheckTodo() func(c *fiber.Ctx) error {
 				return fiber.NewError(500, "Error while saving todo")
 			}
 
-			log.Info("[API] Todo \"" + todo.Title + "\" (" + todo.ID + ") checked as completed")
-			return c.SendString("Todo \"" + todo.Title + "\" (" + todo.ID + ") checked as completed")
+			log.Info("[API] Todo checked as completed", "id", todo.ID)
+			return c.SendString("Todo with id " + todo.ID + " checked as completed")
 		} else {
-			log.Info("[API] Bad request: Todo \"" + todo.Title + "\" (" + todo.ID + ") is already completed")
-			return fiber.NewError(400, "Todo \""+todo.Title+"\" ("+todo.ID+") is already completed")
+			log.Info("[API] Bad request: Todo is already completed", "id", todo.ID)
+			return fiber.NewError(400, "Todo with id "+todo.ID+" is already completed")
 		}
 	}
 }
