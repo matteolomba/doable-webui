@@ -24,8 +24,6 @@ func init() {
 
 func main() {
 	//test()
-	//TODO: Add lists and todos gathering on startup + watch for changes on files
-
 	//-> Web server setup
 	//Render engine
 	engine := html.New("internal/frontend/templates", ".html")
