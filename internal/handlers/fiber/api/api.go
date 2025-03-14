@@ -18,18 +18,18 @@ func GetTodo() func(c *fiber.Ctx) error {
 			todo, err := doable.ReadTodo(id)
 			if err != nil {
 				if os.IsNotExist(err) {
-					log.Info("[API] Bad request: Todo with id " + id + " does not exist")
-					return fiber.NewError(400, "Todo with id "+id+" does not exist")
+					log.Info("[API] Todo with id " + id + " does not exist")
+					return fiber.NewError(fiber.StatusNotFound, "Todo with id "+id+" does not exist")
 				} else {
 					log.Error("[API] Error while reading todo with id "+id, "error", err)
-					return fiber.NewError(500, "Error while reading todo with id "+id)
+					return fiber.NewError(fiber.StatusInternalServerError, "Error while reading todo with id "+id)
 				}
 			}
 			log.Info("[API] Single todo requested", "id", id)
 			return c.JSON(todo)
 		} else {
-			log.Info("[API] Bad request: No id provided")
-			return fiber.NewError(400, "No id provided")
+			log.Info("[API] No id provided")
+			return fiber.NewError(fiber.StatusBadRequest, "No id provided")
 		}
 	}
 }
@@ -39,7 +39,7 @@ func GetTodos() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		todos, err := doable.GetTodos()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting todos. Error: "+err.Error())
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while getting todos. Specific error: "+err.Error())
 		}
 		log.Info("[API] Todos requested")
 		return c.JSON(todos)
@@ -54,18 +54,18 @@ func GetTodoList() func(c *fiber.Ctx) error {
 			list, err := doable.ReadList(id)
 			if err != nil {
 				if os.IsNotExist(err) {
-					log.Info("[API] Bad request: List with id " + id + " does not exist")
-					return fiber.NewError(400, "List with id "+id+" does not exist")
+					log.Info("[API] List with id " + id + " does not exist")
+					return fiber.NewError(fiber.StatusNotFound, "List with id "+id+" does not exist")
 				} else {
 					log.Error("[API] Error while reading list with id "+id, "error", err)
-					return fiber.NewError(500, "Error while reading list with id "+id)
+					return fiber.NewError(fiber.StatusInternalServerError, "Error while reading list with id "+id)
 				}
 			}
 			log.Info("[API] Single list requested", "id", id)
 			return c.JSON(list)
 		} else {
-			log.Info("[API] Bad request: No id provided")
-			return fiber.NewError(400, "No id provided")
+			log.Info("[API] No id provided")
+			return fiber.NewError(fiber.StatusBadRequest, "No id provided")
 		}
 	}
 }
@@ -75,7 +75,7 @@ func GetTodoLists() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		lists, err := doable.GetLists()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting lists. Error: "+err.Error())
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while getting lists. Specific error: "+err.Error())
 		}
 
 		log.Info("[API] Todo lists requested")
@@ -91,18 +91,18 @@ func GetFormattedTodo() func(c *fiber.Ctx) error {
 			todo, err := doable.ReadTodo(id)
 			if err != nil {
 				if os.IsNotExist(err) {
-					log.Info("[API] Bad request: Todo with id " + id + " does not exist")
-					return fiber.NewError(400, "Todo with id "+id+" does not exist")
+					log.Info("[API] Todo with id " + id + " does not exist")
+					return fiber.NewError(fiber.StatusNotFound, "Todo with id "+id+" does not exist")
 				} else {
 					log.Error("[API] Error while reading todo with id "+id, "error", err)
-					return fiber.NewError(500, "Error while reading todo with id "+id)
+					return fiber.NewError(fiber.StatusInternalServerError, "Error while reading todo with id "+id)
 				}
 			}
 
 			list, err := doable.ReadList(todo.ListID)
 			if err != nil && !os.IsNotExist(err) {
 				log.Error("[API] Error while reading list with id "+todo.ListID, "error", err)
-				return fiber.NewError(500, "Error while reading list with id "+todo.ListID)
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while reading list with id "+todo.ListID)
 			}
 
 			if todo.ListID != "" {
@@ -112,8 +112,8 @@ func GetFormattedTodo() func(c *fiber.Ctx) error {
 			log.Info("[API] Requested formatted todo", "id", id)
 			return c.JSON(todo)
 		} else {
-			log.Info("[API] Bad request: No id provided")
-			return fiber.NewError(400, "No id provided")
+			log.Info("[API] No id provided")
+			return fiber.NewError(fiber.StatusBadRequest, "No id provided")
 		}
 	}
 }
@@ -123,12 +123,12 @@ func GetFormattedTodos() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		todos, err := doable.GetTodos()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting todos for formatted todos. Error: "+err.Error())
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while getting todos for formatted todos. Specific error: "+err.Error())
 		}
 
 		lists, err := doable.GetLists()
 		if err != nil {
-			return fiber.NewError(500, "Error while getting lists for formatted todos. Error: "+err.Error())
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while getting lists for formatted todos. Specific error: "+err.Error())
 		}
 
 		// Format only completed todos
@@ -152,18 +152,18 @@ func CheckTodo() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 		if id == "" {
-			log.Info("[API] Bad request: No id provided")
-			return fiber.NewError(400, "No id provided")
+			log.Info("[API] No id provided")
+			return fiber.NewError(fiber.StatusBadRequest, "No id provided")
 		}
 
 		todo, err := doable.ReadTodo(id)
 		if err != nil {
 			if os.IsNotExist(err) {
-				log.Info("[API] Bad request: Todo with id " + id + " does not exist")
-				return fiber.NewError(400, "Todo with id "+id+" does not exist")
+				log.Info("[API] Todo with id " + id + " does not exist")
+				return fiber.NewError(fiber.StatusNotFound, "Todo with id "+id+" does not exist")
 			} else {
 				log.Error("[API] Error while reading todo with id "+id, "error", err)
-				return fiber.NewError(500, "Error while reading todo with id "+id)
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while reading todo with id "+id)
 			}
 		}
 		if !todo.IsCompleted {
@@ -173,14 +173,14 @@ func CheckTodo() func(c *fiber.Ctx) error {
 			// Save the todo
 			err := todo.Save()
 			if err != nil {
-				return fiber.NewError(500, "Error while saving todo")
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while saving todo")
 			}
 
 			log.Info("[API] Todo checked as completed", "id", todo.ID)
 			return c.SendString("Todo with id " + todo.ID + " checked as completed")
 		} else {
-			log.Info("[API] Bad request: Todo is already completed", "id", todo.ID)
-			return fiber.NewError(400, "Todo with id "+todo.ID+" is already completed")
+			log.Info("[API] Todo is already completed", "id", todo.ID)
+			return fiber.NewError(fiber.StatusBadRequest, "Todo with id "+todo.ID+" is already completed")
 		}
 	}
 }
@@ -191,16 +191,53 @@ func CreateTodo() func(c *fiber.Ctx) error {
 		var todo doable.Todo
 		if err := c.BodyParser(&todo); err != nil {
 			log.Error("[API] Error while parsing todo from body", "error", err)
-			return fiber.NewError(400, "Error while parsing todo from body")
+			return fiber.NewError(fiber.StatusBadRequest, "Error while parsing todo from body")
 		}
 
 		err := todo.Create()
 		if err != nil {
 			log.Error("[API] Error while creating todo", "error", err)
-			return fiber.NewError(500, "Error while creating todo")
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while creating todo")
 		}
 
 		log.Info("[API] Created todo \"" + todo.Title + "\" (" + todo.ID + ")")
-		return c.SendString("Created todo \"" + todo.Title + "\" (" + todo.ID + ")")
+		return c.Status(fiber.StatusCreated).JSON(todo)
+	}
+}
+
+// Handler for DELETE /api/todos/:id
+func DeleteTodo() func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		if id == "" {
+			log.Info("[API] Bad request: No id provided")
+			return fiber.NewError(fiber.StatusBadRequest, "No id provided")
+		}
+
+		todo, err := doable.ReadTodo(id)
+		if err != nil {
+			if os.IsNotExist(err) {
+				log.Info("[API] Not found: Todo with id " + id + " does not exist")
+				return fiber.NewError(fiber.StatusNotFound, "Todo with id "+id+" does not exist")
+			} else {
+				log.Error("[API] Error while reading todo with id "+id, "error", err)
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while reading todo with id "+id)
+			}
+		}
+
+		err = todo.Delete()
+		if err != nil {
+			if os.IsNotExist(err) {
+				log.Info("[API] Not found: Todo with id " + id + " does not exist")
+				return fiber.NewError(fiber.StatusNotFound, "Todo with id "+id+" does not exist")
+			} else {
+				log.Error("[API] Error while deleting todo with id "+id, "error", err)
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while deleting todo with id "+id)
+			}
+		}
+
+		// Return no content status
+		log.Info("[API] Deleted todo", "id", id, "todo", todo)
+		return c.Status(fiber.StatusOK).JSON(todo)
 	}
 }

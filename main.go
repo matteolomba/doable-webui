@@ -66,6 +66,7 @@ func main() {
 	app.Get("/api/todos/:id", api.GetTodo())
 	app.Get("/api/todos", api.GetTodos())
 	app.Post("/api/todos", api.CreateTodo())
+	app.Delete("/api/todos/:id", api.DeleteTodo())
 
 	//Start server
 	log.Fatal(app.Listen(":80"))

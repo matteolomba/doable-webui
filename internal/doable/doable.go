@@ -18,6 +18,7 @@ var (
 	cachedTodos     []Todo     //Cached todos to avoid reading from files every time
 	cachedLists     []TodoList //Cached lists to avoid reading from files every time
 	ErrTitleMissing error      = errors.New("doable: title (required) of the todo is missing")
+	ErrDoesNotExist error      = errors.New("doable: the required todo does not exist")
 )
 
 const (
@@ -167,6 +168,7 @@ func ReadTodos() (todos []Todo, err error) {
 	return todos, nil
 }
 
+// Create creates a new todo with the given title, if the title is empty it returns an error, otherwise it creates the todo with a new UUID, sets the creation date and last modified date to the current time, and returns nil
 func (t *Todo) Create() (err error) {
 	if t.Title == "" {
 		return ErrTitleMissing
@@ -199,7 +201,7 @@ func (t *Todo) GetListName(li any) string {
 	return "Not found"
 }
 
-// SaveTodo saves a todo to a .todo file in the todos directory, given the Todo struct
+// Save saves a todo to a .todo file in the todos directory, given the Todo struct
 func (t *Todo) Save() (err error) {
 	var data []byte
 	//Parse JSON
@@ -210,6 +212,21 @@ func (t *Todo) Save() (err error) {
 
 	//Write file
 	err = os.WriteFile("sync/todos/"+t.ID+".todo", data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Delete deletes a todo from the .todo file in the todos directory, given the id
+func (t *Todo) Delete() (err error) {
+	//Check if file exists
+	if _, err = os.Stat("sync/todos/" + t.ID + ".todo"); os.IsNotExist(err) {
+		return ErrDoesNotExist
+	}
+
+	//Delete file
+	err = os.Remove("sync/todos/" + t.ID + ".todo")
 	if err != nil {
 		return err
 	}
