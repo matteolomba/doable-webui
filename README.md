@@ -13,7 +13,7 @@ Un'interfaccia web per interagire con cose da fare scritte e sincronizzate con [
 - Visualizzare le cose da fare
 - Aggiungere nuove cose da fare (presente nell'API ma non nell'interfaccia web)
 - Modificare una cosa da fare (da implementare)
-- Rimuovere una cose da fare (da implementare)
+- Rimuovere una cose da fare (presente nell'API ma non nell'interfaccia web)
 
 ## Requisiti
 

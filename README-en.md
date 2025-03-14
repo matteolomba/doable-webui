@@ -13,7 +13,7 @@ A web ui to interact with todos written and synced with [Doable](https://doable.
 - View todos
 - Add new todos (added in the API but not in the web UI)
 - Edit a todo (to be implemented)
-- Remove a todo (to be implemented)
+- Remove a todo (added in the API but not in the web UI)
 
 ## Requirements
 
