@@ -10,7 +10,7 @@
 
 # File di log
 *.log
-log.json
+log*.json
 
 ## Go basic gitignore
 # Binaries for programs and plugins
