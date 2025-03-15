@@ -2,9 +2,11 @@ package logger
 
 import (
 	"doable-go/pkg/utils"
-	"fmt"
 	"log/slog"
 	"os"
+	"time"
+
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 // formatErr Formats the error to a string for logging if it is not already a string
@@ -21,22 +23,41 @@ func formatErr(err any) string {
 
 // Init initializes the logger, needs to be called before any logging if you want to use the custom logger
 func Init(level string) {
-	//Log level parsing
+	// Log level parsing
 	slogLevel := utils.LevelStringToSlog(level)
 
-	//Open file for logging
-	logFile, err := os.OpenFile("log.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		Fatal("[Logger] Error opening the log file -> " + fmt.Sprint(err))
+	// Initialize Lumberjack logger
+	lumberjackLogger := &lumberjack.Logger{
+		Filename:   "log_" + time.Now().Format("2006-01-02") + ".json",
+		MaxAge:     14,
+		MaxBackups: 14,
+		MaxSize:    15,
+		Compress:   true,
 	}
 
-	//Set the default logger
+	// Set the default logger with Lumberjack and JSON format
 	slog.SetDefault(slog.New(
-		//Log to file in JSON format
-		slog.NewJSONHandler(logFile, &slog.HandlerOptions{
+		slog.NewJSONHandler(lumberjackLogger, &slog.HandlerOptions{
 			Level: slogLevel,
 		}),
 	))
+
+	// Delete old logs every midnight
+	go func() {
+		for {
+			now := time.Now()
+
+			//Calculate next midnight
+			nextMidnight := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location()).Add(24 * time.Hour)
+
+			//Sleep until next midnight
+			time.Sleep(time.Until(nextMidnight))
+
+			//Rotate the logs
+			lumberjackLogger.Rotate()
+			slog.Info("[Logger] Rotated logs")
+		}
+	}()
 }
 
 // DebugSource logs a debug message with the source specified
