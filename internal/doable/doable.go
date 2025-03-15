@@ -168,15 +168,27 @@ func ReadTodos() (todos []Todo, err error) {
 	return todos, nil
 }
 
-// Create creates a new todo with the given title, if the title is empty it returns an error, otherwise it creates the todo with a new UUID, sets the creation date and last modified date to the current time, and returns nil
-func (t *Todo) Create() (err error) {
+// FormatForCreation prepares the fields of the todo in creation with the given title, if the title is empty it returns an error, otherwise it creates the todo with a new UUID, sets the required fields and returns nil
+func (t *Todo) FormatForCreation() (err error) {
 	if t.Title == "" {
 		return ErrTitleMissing
 	}
-	t.ID = uuid.New().String()
+
+	//Create ID, until it is unique
+	isValid := false
+	for !isValid {
+		t.ID = uuid.New().String()
+		if _, err = os.Stat("sync/todos/" + t.ID + ".todo"); err == nil {
+			isValid = true
+		}
+	}
+
+	//Set other fields
 	t.IsCompleted = false
 	t.IsImportant = false
 	t.HasRecurred = false
+	t.ListID = ""
+	t.CompletedDate = ""
 	formattedTime := time.Now().Format("2006-01-02T15:04:05.000")
 	t.CreationDate = formattedTime
 	t.LastModified = formattedTime

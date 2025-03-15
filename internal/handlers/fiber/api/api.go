@@ -194,13 +194,19 @@ func CreateTodo() func(c *fiber.Ctx) error {
 			return fiber.NewError(fiber.StatusBadRequest, "Error while parsing todo from body")
 		}
 
-		err := todo.Create()
+		err := todo.FormatForCreation()
 		if err != nil {
-			log.Error("[API] Error while creating todo", "error", err)
-			return fiber.NewError(fiber.StatusInternalServerError, "Error while creating todo")
+			log.Error("[API] Error while formatting the todo for creation", "error", err)
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while formatting the todo for creation")
 		}
 
-		log.Info("[API] Created todo \"" + todo.Title + "\" (" + todo.ID + ")")
+		err = todo.Save()
+		if err != nil {
+			log.Error("[API] Error while saving the new todo", "error", err)
+			return fiber.NewError(fiber.StatusInternalServerError, "Error while saving the new todo")
+		}
+
+		log.Info("[API] Created new todo with title \"" + todo.Title + "\" (" + todo.ID + ")")
 		return c.Status(fiber.StatusCreated).JSON(todo)
 	}
 }
