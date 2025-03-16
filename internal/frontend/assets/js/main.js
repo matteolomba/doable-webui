@@ -73,12 +73,31 @@ function checkTodo(id){
     fetch("api/todos/"+ id + "/check", {
         method: "PUT",
     }).then(res => {
-        if(res.status == 200){
+        if(res.status == 204){
             let toBeChecked = todosDB.find(x => x.id == id)
             let elementIndex = todosDB.indexOf(toBeChecked);
-            todosDB.splice(elementIndex, 1);
+            todosDB[elementIndex].isCompleted = true;
             search(); //Update the page with the new data
             showNotification(checkCircle() + toBeChecked.title + " segnata come completata!");
+        } else {
+            res.text().then(text => {
+                console.error("Errore " + res.status + " - " + text);
+                showNotification("Errore " + res.status + " - " + text, "error");
+            });
+        }
+    });
+}
+
+function uncheckTodo(id){
+    fetch("api/todos/"+ id + "/uncheck", {
+        method: "PUT",
+    }).then(res => {
+        if(res.status == 204){
+            let toBeUnchecked = todosDB.find(x => x.id == id)
+            let elementIndex = todosDB.indexOf(toBeUnchecked);
+            todosDB[elementIndex].isCompleted = false;
+            search(); //Update the page with the new data
+            showNotification(checkCircle() + toBeUnchecked.title + " segnata come non completata!");
         } else {
             res.text().then(text => {
                 console.error("Errore " + res.status + " - " + text);
@@ -187,7 +206,7 @@ function createListItem(todo){
     return `<a id="${todo.id}" class="list-group-item list-group-item-action">
     <div class="d-flex flex-row justify-content-between">
         <div id="${todo.id}-left" class="flex-grow-4 flex-grow-1 d-flex flex-row">
-            <div onclick='checkTodo("${todo.id}")' class="clickable">
+            <div onclick='${!todo.isCompleted ? '':'un'}checkTodo("${todo.id}")' class="clickable">
             ${!todo.isCompleted ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.52rem" height="1.52rem" min-width="1.52rem" min-height="1.52rem" class="main-grid-item-icon pe-1 flex-shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10" /></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle pe-1 flex-shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'}
             </div>
             <div class="d-flex flex-column">

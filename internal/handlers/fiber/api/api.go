@@ -177,7 +177,7 @@ func CheckTodo() func(c *fiber.Ctx) error {
 			}
 
 			log.Info("[API] Todo checked as completed", "id", todo.ID)
-			return c.Status(fiber.StatusOK).JSON(todo)
+			return c.Status(fiber.StatusNoContent).Send([]byte(""))
 		} else {
 			log.Info("[API] Todo is already completed", "id", todo.ID)
 			return fiber.NewError(fiber.StatusBadRequest, "Todo with id "+todo.ID+" is already completed")
@@ -215,7 +215,7 @@ func UncheckTodo() func(c *fiber.Ctx) error {
 			}
 
 			log.Info("[API] Todo unchecked", "id", todo.ID)
-			return c.Status(fiber.StatusOK).JSON(todo)
+			return c.Status(fiber.StatusNoContent).Send([]byte(""))
 		} else {
 			log.Info("[API] Todo is already unchecked", "id", todo.ID)
 			return fiber.NewError(fiber.StatusBadRequest, "Todo with id "+todo.ID+" is already unchecked")
