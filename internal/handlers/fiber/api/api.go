@@ -177,10 +177,48 @@ func CheckTodo() func(c *fiber.Ctx) error {
 			}
 
 			log.Info("[API] Todo checked as completed", "id", todo.ID)
-			return c.SendString("Todo with id " + todo.ID + " checked as completed")
+			return c.Status(fiber.StatusOK).JSON(todo)
 		} else {
 			log.Info("[API] Todo is already completed", "id", todo.ID)
 			return fiber.NewError(fiber.StatusBadRequest, "Todo with id "+todo.ID+" is already completed")
+		}
+	}
+}
+
+// Handler for PUT /api/todos/:id/uncheck
+func UncheckTodo() func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		if id == "" {
+			log.Info("[API] No id provided")
+			return fiber.NewError(fiber.StatusBadRequest, "No id provided")
+		}
+
+		todo, err := doable.ReadTodo(id)
+		if err != nil {
+			if os.IsNotExist(err) {
+				log.Info("[API] Todo with id " + id + " does not exist")
+				return fiber.NewError(fiber.StatusNotFound, "Todo with id "+id+" does not exist")
+			} else {
+				log.Error("[API] Error while reading todo with id "+id, "error", err)
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while reading todo with id "+id)
+			}
+		}
+		if todo.IsCompleted {
+			todo.IsCompleted = false
+			todo.LastModified = time.Now().Format("2006-01-02T15:04:05.000")
+
+			// Save the todo
+			err := todo.Save()
+			if err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, "Error while saving todo")
+			}
+
+			log.Info("[API] Todo unchecked", "id", todo.ID)
+			return c.Status(fiber.StatusOK).JSON(todo)
+		} else {
+			log.Info("[API] Todo is already unchecked", "id", todo.ID)
+			return fiber.NewError(fiber.StatusBadRequest, "Todo with id "+todo.ID+" is already unchecked")
 		}
 	}
 }

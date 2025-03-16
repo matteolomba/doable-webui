@@ -61,6 +61,7 @@ func main() {
 	app.Get("/api/todos/formatted", api.GetFormattedTodos())
 	app.Get("/api/todos/:id/formatted", api.GetFormattedTodo())
 	app.Put("/api/todos/:id/check", api.CheckTodo())
+	app.Put("/api/todos/:id/uncheck", api.UncheckTodo())
 	app.Get("/api/todos/:id", api.GetTodo())
 	app.Get("/api/todos", api.GetTodos())
 	app.Post("/api/todos", api.CreateTodo())
