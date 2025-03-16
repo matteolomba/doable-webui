@@ -33,6 +33,7 @@ func Init(level string) {
 		MaxBackups: 14,
 		MaxSize:    15,
 		Compress:   true,
+		LocalTime:  true,
 	}
 
 	// Set the default logger with Lumberjack and JSON format
@@ -52,6 +53,9 @@ func Init(level string) {
 
 			//Sleep until next midnight
 			time.Sleep(time.Until(nextMidnight))
+
+			//Update file name
+			lumberjackLogger.Filename = "log_" + nextMidnight.Format("2006-01-02") + ".json"
 
 			//Rotate the logs
 			lumberjackLogger.Rotate()
