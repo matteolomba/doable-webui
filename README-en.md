@@ -10,10 +10,11 @@ A web ui to interact with todos written and synced with [Doable](https://doable.
 
 ## Features
 
-- View todos
-- Add new todos (added in the API but not in the web UI)
-- Edit a todo (to be implemented)
-- Remove a todo (added in the API but not in the web UI)
+- ⚡ **Todo Management (CRUD)**: View, add, edit, complete and delete todos
+- 📋 **List Management (CRUD)**: Create, edit and delete lists
+- 🎨 **List Customization**: Icons for lists (displayed only on the webui)
+- 🔍 **Filters**: By list, status and text search
+- 🌙 **Light/Dark Theme**: Manually togglable
 
 ## Requirements
 
@@ -30,6 +31,7 @@ LOG_LEVEL=DEBUG # Or INFO, WARN, ERROR, FATAL (same as error), default: WARN
 
 ## Credits
 
-- [Bootstrap](https://getbootstrap.com/) - Used and included in the project, [MIT](https://github.com/twbs/bootstrap/blob/main/LICENSE) license
-- [Rubik Font](https://fonts.google.com/specimen/Rubik) - Used and included in the project, [OFL](https://fonts.google.com/specimen/Rubik/license) license
-- [Feather Icons](https://github.com/feathericons/feather) - Used and included in the project, [MIT](https://github.com/feathericons/feather/blob/main/LICENSE) license
+- [Tailwind CSS](https://tailwindcss.com/) - Used in the project, [MIT](https://github.com/tailwindlabs/tailwindcss/blob/master/LICENSE) license
+- [Alpine.js](https://alpinejs.dev/) - Used in the project, [MIT](https://github.com/alpinejs/alpine/blob/main/LICENSE.md) license
+- [Outfit Font](https://fonts.google.com/specimen/Outfit) - Used and included in the project, [OFL](https://fonts.google.com/specimen/Outfit/license) license
+- [Feather Icons](https://github.com/feathericons/feather) - Used and included in the project (inline SVGs directly in the code), [MIT](https://github.com/feathericons/feather/blob/main/LICENSE) license

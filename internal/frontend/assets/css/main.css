@@ -1,14 +1,77 @@
 body {
-  font-family: 'Rubik', sans-serif;
-  min-width: 350px;
-  width: 100%;
-  height: 100%;
+    background-color: #e2e8f0;
+    /* Slate 200 */
+    /* Subtle grain or mesh gradient for typical M3 vibe */
+    background-image:
+        radial-gradient(at 90% 10%, hsla(260, 50%, 85%, 1) 0px, transparent 50%),
+        radial-gradient(at 10% 90%, hsla(200, 50%, 85%, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+    transition: background-color 0.3s ease;
 }
 
-#search-keyword, .input-group-text{
-  border: solid #198754 1px !important;
+.dark body {
+    background-color: #020617;
+    /* Slate 950 */
+    background-image:
+        radial-gradient(at 90% 10%, hsla(260, 30%, 15%, 1) 0px, transparent 50%),
+        radial-gradient(at 10% 90%, hsla(200, 30%, 15%, 1) 0px, transparent 50%);
 }
 
-.clickable {
-  cursor: pointer !important;
+/* Material Ripple Simulation */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .5s, opacity 1s;
+}
+
+.dark .ripple:after {
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+}
+
+.ripple:active:after {
+    transform: scale(0, 0);
+    opacity: 0.1;
+    transition: 0s;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
 }

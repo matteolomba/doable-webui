@@ -9,7 +9,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"github.com/gofiber/fiber/v2"
 	fiberLogger "github.com/gofiber/fiber/v2/middleware/logger"
@@ -58,17 +60,39 @@ func main() {
 	//Routes
 	app.Get("/api/lists/:id", api.GetTodoList())
 	app.Get("/api/lists", api.GetTodoLists())
+	app.Post("/api/lists", api.CreateList())
+	app.Put("/api/lists/:id", api.UpdateList())
+	app.Put("/api/lists/:id/todos/reassign", api.BulkUpdateListTodos())
+	app.Delete("/api/lists/:id", api.DeleteList())
 	app.Get("/api/todos/formatted", api.GetFormattedTodos())
 	app.Get("/api/todos/:id/formatted", api.GetFormattedTodo())
 	app.Put("/api/todos/:id/check", api.CheckTodo())
 	app.Put("/api/todos/:id/uncheck", api.UncheckTodo())
+	app.Put("/api/todos/:id", api.UpdateTodo())
 	app.Get("/api/todos/:id", api.GetTodo())
 	app.Get("/api/todos", api.GetTodos())
 	app.Post("/api/todos", api.CreateTodo())
 	app.Delete("/api/todos/:id", api.DeleteTodo())
 
-	//Start server
-	log.Fatal(app.Listen(":80"))
+	// Start server with Graceful Shutdown
+	// Create a channel to listen for OS signals
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		if err := app.Listen(":3000"); err != nil {
+			log.Info("Server is shutting down")
+		}
+	}()
+
+	<-quit // Wait for signal
+	log.Info("Gracefully shutting down...")
+
+	if err := app.Shutdown(); err != nil {
+		log.Error("Server forced to shutdown:", err)
+	}
+
+	log.Info("Server exited")
 }
 
 func test() {

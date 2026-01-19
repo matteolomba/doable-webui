@@ -1,22 +1,68 @@
 {{define "header.html"}}
-    <head>
-        <title>{{ . }}</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <!--Font-->
-        <link href="/css/font.rubik.css" rel="stylesheet">
-        
-        <!--Bootstrap-->
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <script defer src="/js/bootstrap.bundle.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.}}</title>
 
-        <!--Feather Icons-->
-        <script defer src="/js/feather.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        <!--Other assets-->
-        <link rel="stylesheet" href="/css/main.css">
-        <script defer src="/js/main.js"></script>
-    </head>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Feather Icons -->
+    <script src="/js/feather.min.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="/css/font.outfit.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/main.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        // Material You inspired dynamic-like colors (Indigo Theme)
+                        primary: '#4f46e5', // INDIGO 600
+                        onPrimary: '#ffffff',
+                        primaryContainer: '#e0e7ff', // INDIGO 100
+                        onPrimaryContainer: '#312e81', // INDIGO 900
+
+                        surface: '#f3f4f6', // GRAY 100 as base
+                        surfaceVariant: '#e5e7eb', // GRAY 200
+                        onSurface: '#1f2937', // GRAY 800
+                        onSurfaceVariant: '#4b5563', // GRAY 600
+
+                        outline: '#d1d5db', // GRAY 300
+
+                        secondary: '#06b6d4', // CYAN 500 (Accent)
+                        secondaryContainer: '#cffafe', // CYAN 100
+
+                        // Dark Theme Colors
+                        'surface-dark': '#0f172a', // Slate 900
+                        'surfaceVariant-dark': '#1e293b', // Slate 800
+                        'onSurface-dark': '#e2e8f0', // Slate 200
+                        'onSurfaceVariant-dark': '#94a3b8', // Slate 400
+                        'outline-dark': '#334155', // Slate 700
+                        'primary-dark': '#818cf8', // Indigo 400
+                        'onPrimary-dark': '#312e81', // Indigo 900
+                        'primaryContainer-dark': '#312e81', // Indigo 900
+                        'onPrimaryContainer-dark': '#e0e7ff', // Indigo 100
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                        '5xl': '2.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
 {{end}}

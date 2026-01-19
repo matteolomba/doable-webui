@@ -10,10 +10,11 @@ Un'interfaccia web per interagire con cose da fare scritte e sincronizzate con [
 
 ## Cosa ci puoi fare
 
-- Visualizzare le cose da fare
-- Aggiungere nuove cose da fare (presente nell'API ma non nell'interfaccia web)
-- Modificare una cosa da fare (da implementare)
-- Rimuovere una cose da fare (presente nell'API ma non nell'interfaccia web)
+- ⚡ **Gestione Cose da fare (CRUD)**: Visualizza, aggiungi, modifica, completa ed elimina le cose da fare
+- 📋 **Gestione Liste (CRUD)**: Crea, modifica ed elimina liste
+- 🎨 **Personalizzazione liste**: Icone per le liste (visualizzate solo sulla webui)
+- 🔍 **Filtri**: Per lista, stato e ricerca testuale
+- 🌙 **Tema chiaro/scuro**: Attivabile/disattivabile manualmente
 
 ## Requisiti
 
@@ -30,6 +31,7 @@ LOG_LEVEL=DEBUG # Oppure INFO, WARN, ERROR, FATAL (uguale a error), default: WAR
 
 ## Crediti
 
-- [Bootstrap](https://getbootstrap.com/) - Utilizzato e incluso nel progetto, licenza [MIT](https://github.com/twbs/bootstrap/blob/main/LICENSE)
-- [Rubik Font](https://fonts.google.com/specimen/Rubik) - Utilizzato e incluso nel progetto, licenza [OFL](https://fonts.google.com/specimen/Rubik/license)
-- [Feather Icons](https://github.com/feathericons/feather) - Utilizzato e incluso nel progetto, licenza [MIT](https://github.com/feathericons/feather/blob/main/LICENSE)
+- [Tailwind CSS](https://tailwindcss.com/) - Utilizzato nel progetto, licenza [MIT](https://github.com/tailwindlabs/tailwindcss/blob/master/LICENSE)
+- [Alpine.js](https://alpinejs.dev/) - Utilizzato nel progetto, licenza [MIT](https://github.com/alpinejs/alpine/blob/main/LICENSE.md)
+- [Outfit Font](https://fonts.google.com/specimen/Outfit) - Utilizzato e incluso nel progetto, licenza [OFL](https://fonts.google.com/specimen/Outfit/license)
+- [Feather Icons](https://github.com/feathericons/feather) - Utilizzato e incluso nel progetto (SVG inline direttamente nel codice), licenza [MIT](https://github.com/feathericons/feather/blob/main/LICENSE)
