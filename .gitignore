@@ -1,6 +1,7 @@
 ## Specific for this program
 #sync folder that should contain Doable sync data (sync it with Nextcloud client or directly with a symlink to the Nextcloud folder on the server)
 /sync/
+oldsync/
 
 # .env to fill according to docs
 .env
